@@ -101,6 +101,16 @@ class MessageService
 	 * @throws SystemException
 	 * @throws ArgumentException
 	 */
+	public static function isUserChatParticipant(int $currentChatId , int $userId): bool
+	{
+		$chatIds = ChatTable::query()->setSelect(['ID'])
+							->setFilter(['LOGIC' => 'OR', 'RECIPIENT_ID' => $userId, 'AUTHOR_ID' => $userId])
+							->exec()
+							->fetchAll();
+		$idsForCurrentUser = [];
+		foreach ($chatIds as $chatId)
+		{
+			$idsForCurrentUser[] = (int)$chatId['ID'];
 	public static function isUserChatParticipant(int $currentChatId): bool
 	{
 		global $USER;
