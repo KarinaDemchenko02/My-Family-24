@@ -86,6 +86,12 @@ class PersonTable extends DataManager
 					'title' => Loc::getMessage('PERSON_ENTITY_SURNAME_FIELD')
 				]
 			),
+			new StringField(
+				'PATRONYMIC',
+				[
+					'validation' => [__CLASS__, 'validatePatronymic'],
+				]
+			),
 			new DateField(
 				'BIRTH_DATE',
 				[
@@ -138,6 +144,13 @@ class PersonTable extends DataManager
 					'title' => Loc::getMessage('PERSON_ENTITY_ACTIVE_FIELD')
 				]
 			),
+			new StringField(
+				'HASH',
+				[
+					'required' => true,
+					'title' => Loc::getMessage('PERSON_ENTITY_HASH_FIELD')
+				]
+			),
 			'RELATION_PARENT_PERSON' => (new OneToMany('RELATION_PARENT_PERSON', PersonParentTable::class, 'PARENT_PERSON'))->configureJoinType('inner'),
 
 			'RELATION_CHILD_PERSON' => (new OneToMany('RELATION_CHILD_PERSON', PersonParentTable::class, 'CHILD_PERSON'))->configureJoinType('inner'),
@@ -178,6 +191,13 @@ class PersonTable extends DataManager
 	 * @return array
 	 */
 	public static function validateSurname()
+	{
+		return [
+			new LengthValidator(null, 50),
+		];
+	}
+
+	public static function validatePatronymic()
 	{
 		return [
 			new LengthValidator(null, 50),

@@ -43,7 +43,8 @@ this.BX.Up = this.BX.Up || {};
 	        BX.ajax.runAction('up:tree.chatRelatives.addMessages', {
 	          data: {
 	            recipientId: recipientId,
-	            message: message
+	            message: message,
+	            isAdmin: 0
 	          }
 	        }).then(function (response) {
 	          resolve(response.data);
@@ -186,14 +187,21 @@ this.BX.Up = this.BX.Up || {};
 	  }, {
 	    key: "renderSelect",
 	    value: function renderSelect() {
-	      var select = main_core.Tag.render(_templateObject2 || (_templateObject2 = babelHelpers.taggedTemplateLiteral(["\n\t\t<div class=\"select-box\">\n\t\t\t<div class=\"select-container\">\n\t\t\t\t<div class=\"select-box__current\" tabindex=\"1\">\n\t\t\t\t\t", "\n\t\t\t\t\n\t\t\t\t\t<img class=\"select-box__icon\" src=\"http://cdn.onlinewebfonts.com/svg/img_295694.svg\" alt=\"Arrow Icon\" aria-hidden=\"true\"/>\n\t\t\t\t</div>\n\t\t\t\t<ul class=\"select-box__list\">\n\t\t\t\t\t", "\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t\t<button id=\"search-relatives\" class=\"search__btn\">\u041F\u043E\u0438\u0441\u043A</button>\n\t\t</div>"])), this.trees.map(function (item) {
+	      var select = main_core.Tag.render(_templateObject2 || (_templateObject2 = babelHelpers.taggedTemplateLiteral(["\n\t\t<div class=\"select-box\">\n\t\t\t<div class=\"select-container\">\n\t\t\t\t<div class=\"select-box__current\" tabindex=\"1\">\n\t\t\t\t\t", "\n\t\t\t\t\t<img class=\"select-box__icon\" src=\"http://cdn.onlinewebfonts.com/svg/img_295694.svg\" alt=\"Arrow Icon\" aria-hidden=\"true\"/>\n\t\t\t\t</div>\n\t\t\t\t<ul class=\"select-box__list\">\n\t\t\t\t\t", "\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t\t<button id=\"search-relatives\" class=\"search__btn\">\u041F\u043E\u0438\u0441\u043A</button>\n\t\t</div>"])), this.trees.length !== 0 ? "\n\t\t\t\t\t\t".concat(this.trees.map(function (item) {
 	        return "\n\t\t\t\t\t\t<div class=\"select-box__value\">\n\t\t\t\t\t\t\t<input class=\"select-box__input\" type=\"radio\" id=\"".concat(item.id, "\" value=\"").concat(item.id, "\" name=\"trees\" checked=\"checked\"/>\n\t\t\t\t\t\t\t<p id=\"tree").concat(item.id, "\" class=\"select-box__input-text\">").concat(item.title, "</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t");
-	      }).join(''), this.trees.map(function (item) {
+	      }).join(''), "\n\t\t\t\t\t") : "\n\t\t\t\t\t\t<div class=\"select-box__value\">\n\t\t\t\t\t\t\t<input class=\"select-box__input\" type=\"radio\" name=\"trees\" checked=\"checked\"/>\n\t\t\t\t\t\t\t<p class=\"select-box__input-text\">\u041D\u0435\u0442 \u0434\u0435\u0440\u0435\u0432\u044C\u0435\u0432</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t", this.trees.length !== 0 ? "\n\t\t\t\t\t\t".concat(this.trees.map(function (item) {
 	        return "\n\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t<label class=\"select-box__option\" for=\"".concat(item.id, "\" aria-hidden=\"aria-hidden\">").concat(item.title, "</label>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t ");
-	      }).join(''));
-	      var textInfo = main_core.Tag.render(_templateObject3 || (_templateObject3 = babelHelpers.taggedTemplateLiteral(["\n\t\t<h2 class=\"search__heading\">\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0434\u0435\u0440\u0435\u0432\u043E, \u043F\u043E \u043A\u043E\u0442\u043E\u0440\u043E\u043C\u0443 \u0445\u043E\u0442\u0438\u0442\u0435 \u0441\u0434\u0435\u043B\u0430\u0442\u044C \u043F\u043E\u0438\u0441\u043A</h2>\n\t\t"])));
+	      }).join(''), "\n\t\t\t\t\t") : "\n\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t<label class=\"select-box__option\" aria-hidden=\"aria-hidden\">\u041D\u0435\u0442 \u0434\u0435\u0440\u0435\u0432\u044C\u0435\u0432</label>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t");
+	      var textInfo = main_core.Tag.render(_templateObject3 || (_templateObject3 = babelHelpers.taggedTemplateLiteral(["\n\t\t\t<h2 class=\"search__heading\">\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0434\u0435\u0440\u0435\u0432\u043E, \u043F\u043E \u043A\u043E\u0442\u043E\u0440\u043E\u043C\u0443 \u0445\u043E\u0442\u0438\u0442\u0435 \u0441\u0434\u0435\u043B\u0430\u0442\u044C \u043F\u043E\u0438\u0441\u043A</h2>\n\t\t"])));
 	      BX.append(textInfo, this.rootNode);
 	      BX.append(select, this.rootNode);
+	      if (this.trees.length !== 0) {
+	        BX('text-search').innerHTML = 'Нажмите на кнопку "Поиск"';
+	        BX('search-relatives').disabled = false;
+	      } else {
+	        BX('text-search').innerHTML = 'Отсутствуют деревья с подтвержденным пользовательским соглашением. Подробнее в <a class="search-doc" href="#">документации</a>';
+	        BX('search-relatives').disabled = true;
+	      }
 	    }
 	  }, {
 	    key: "renderListUser",
@@ -255,7 +263,7 @@ this.BX.Up = this.BX.Up || {};
 	          var list = main_core.Tag.render(_templateObject4 || (_templateObject4 = babelHelpers.taggedTemplateLiteral(["\n\t\t\t\t\t  <main class=\"leaderboard__profiles\">\n\t\t\t\t\t\t", "\n\t\t\t\t\t  </main>\n\t\t\t\t\t"])), usersWithChats.map(function (_ref2) {
 	            var user = _ref2.user,
 	              chatExists = _ref2.chatExists;
-	            return "\n\t\t\t\t\t\t  <article class=\"leaderboard__profile\">\n\t\t\t\t\t\t\t<img src=\"/local/modules/up.tree/images/tree-account.png\" alt=\"user\" class=\"leaderboard__picture\">\n\t\t\t\t\t\t\t<span class=\"leaderboard__name\">\n\t\t\t\t\t\t\t\t<span>User: ".concat(BX.util.htmlspecialchars(user.NAME) + ' ' + BX.util.htmlspecialchars(user.LAST_NAME), "</span>\n\t\t\t\t\t\t\t \t <span class=\"leaderboard__persons\">\n\t\t\t\t\t\t\t\t\t<span class=\"heading-persons\">Found relatives:</span>\n\t\t\t\t\t\t\t\t\t\t").concat(_this3.usersPersons.foundPersons.filter(function (person) {
+	            return "\n\t\t\t\t\t\t  <article class=\"leaderboard__profile\">\n\t\t\t\t\t\t\t<img src=\"".concat(user.FILE_NAME, "\" alt=\"user\" class=\"leaderboard__picture\">\n\t\t\t\t\t\t\t<span class=\"leaderboard__name\">\n\t\t\t\t\t\t\t\t<span>").concat(BX.message('UP_TREE_SEARCH_USER'), ": ").concat(BX.util.htmlspecialchars(user.NAME) + ' ' + BX.util.htmlspecialchars(user.LAST_NAME), "</span>\n\t\t\t\t\t\t\t \t <span class=\"leaderboard__persons\">\n\t\t\t\t\t\t\t\t\t<span class=\"heading-persons\">").concat(BX.message('UP_TREE_SEARCH_FOUND_RELATIVES'), ":</span>\n\t\t\t\t\t\t\t\t\t\t").concat(_this3.usersPersons.foundPersons.filter(function (person) {
 	              return person.userId === Number(user.ID);
 	            }).map(function (person) {
 	              return "\n\t\t\t\t\t\t\t\t\t\t  <p class=\"persons-info\">".concat(person.name + ' ' + person.surname, ";</p>\n\t\t\t\t\t\t\t\t\t\t");

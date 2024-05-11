@@ -5,6 +5,7 @@ use Bitrix\Main\DB\Connection;
 use Bitrix\Main\Request;
 use Bitrix\Main\Web\Uri;
 use Up\Tree\Model\UserSubscriptionTable;
+use Up\Tree\Model\UserTable;
 
 function request(): Request
 {
@@ -32,9 +33,11 @@ function OnBeforeUserRegisterHandler(&$arFields): void
 function DoBeforeUserLoginHandler(&$arFields): void
 {
 	$userLogin = $_POST["USER_LOGIN"];
+
 	if (isset($userLogin))
 	{
 		$isEmail = strpos($userLogin,"@");
+
 		if ($isEmail>0)
 		{
 			$arFilter = Array("EMAIL"=>$userLogin);
@@ -42,18 +45,27 @@ function DoBeforeUserLoginHandler(&$arFields): void
 			if($res = $rsUsers->Fetch())
 			{
 				if($res["EMAIL"]==$arFields["LOGIN"])
+				{
 					$arFields["LOGIN"] = $res["LOGIN"];
+				}
 			}
 		}
 	}
 }
 
+/**
+ * @throws Exception
+ */
 function OnAfterUserRegisterHandler(&$arFields): void
 {
 	if ($arFields['USER_ID'] > 0) {
 		global $USER;
 		$userId = (int) $USER->GetID();
+
 		UserSubscriptionTable::add(['USER_ID' => $userId]);
+
+		UserTable::update($userId, ['PERSONAL_PHOTO' => 14]);
+
 		$request = \request();
 		$uriString = $request->getRequestUri();
 

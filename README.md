@@ -6,10 +6,11 @@ Install module using admin panel
 
 Set `Family tree template` as your primary site template
 
-## Installing the template
+## Installing the template:
 ![template.png](screenshots/template.png)
-## Uncheck the boxes in the Bitrix authentication settings
-![register.png](screenshots/register.png)
+
+## Check the boxes in the Bitrix authentication settings:
+![register2.png](screenshots%2Fregister2.png)
 
 ## Setup modern Bitrix routing
 
@@ -58,9 +59,9 @@ For correct export to pdf, enter the terminal:
 node node_modules/@balkangraph/export-service/app.js
 ```
 
-Going to the directory `${doc_root}/local/modules/up.tree`
+Going to the directory `${doc_root}/local/modules/up.tree` in the terminal
 
-Run command:
+You must install node.js and then run the command:
 ```
 npm install
 ```
@@ -74,10 +75,14 @@ Create a folder in the `local` folder with the file `php_interface/init.php` and
 \Bitrix\Main\Loader::includeModule('up.tree');
 ```
 
-In the Bitrix admin panel, check the box:
-![register2.png](screenshots%2Fregister2.png)
-
 After that also add a symbolic link:
 ```
 mklink /d C:\OSPanel\domains\dev.tree\local\modules\up.tree\node_modules\@balkangraph\export-service\upload C:\OSPanel\domains\dev.tree\upload
 ```
+
+For websocket to work, go to the directory `${doc_root}/local/modules/up.tree` in the terminal and enter:
+```
+node server
+```
+Create trees, look for relatives, communicate:
+![myFamily.png](screenshots%2FmyFamily.png)

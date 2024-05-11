@@ -91,33 +91,53 @@ export class Search
 		<div class="select-box">
 			<div class="select-container">
 				<div class="select-box__current" tabindex="1">
-					${this.trees.map(item => `
+					${this.trees.length !== 0 ? `
+						${this.trees.map(item => `
 						<div class="select-box__value">
 							<input class="select-box__input" type="radio" id="${item.id}" value="${item.id}" name="trees" checked="checked"/>
 							<p id="tree${item.id}" class="select-box__input-text">${item.title}</p>
 						</div>
 					`).join('')}
-				
+					` : `
+						<div class="select-box__value">
+							<input class="select-box__input" type="radio" name="trees" checked="checked"/>
+							<p class="select-box__input-text">Нет деревьев</p>
+						</div>
+					`}
 					<img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
 				</div>
 				<ul class="select-box__list">
-					${this.trees.map(item => `
+					${this.trees.length !== 0 ? `
+						${this.trees.map(item => `
 						<li>
 							<label class="select-box__option" for="${item.id}" aria-hidden="aria-hidden">${item.title}</label>
 						</li>
 					 `).join('')}
+					` : `
+						<li>
+							<label class="select-box__option" aria-hidden="aria-hidden">Нет деревьев</label>
+						</li>
+					`}
 				</ul>
 			</div>
 			<button id="search-relatives" class="search__btn">Поиск</button>
 		</div>`
 
 		const textInfo = Tag.render`
-		<h2 class="search__heading">Выберите дерево, по которому хотите сделать поиск</h2>
+			<h2 class="search__heading">Выберите дерево, по которому хотите сделать поиск</h2>
 		`;
 
 		BX.append(textInfo, this.rootNode);
 
 		BX.append(select, this.rootNode);
+
+		if (this.trees.length !== 0) {
+			BX('text-search').innerHTML = 'Нажмите на кнопку "Поиск"';
+			BX('search-relatives').disabled = false;
+		} else {
+			BX('text-search').innerHTML = 'Отсутствуют деревья с подтвержденным пользовательским соглашением. Подробнее в <a class="search-doc" href="#">документации</a>';
+			BX('search-relatives').disabled = true;
+		}
 	}
 
 	renderListUser()
@@ -139,11 +159,11 @@ export class Search
 					  <main class="leaderboard__profiles">
 						${usersWithChats.map(({ user, chatExists }) => `
 						  <article class="leaderboard__profile">
-							<img src="/local/modules/up.tree/images/tree-account.png" alt="user" class="leaderboard__picture">
+							<img src="${user.FILE_NAME}" alt="user" class="leaderboard__picture">
 							<span class="leaderboard__name">
-								<span>User: ${BX.util.htmlspecialchars(user.NAME) + ' ' + BX.util.htmlspecialchars(user.LAST_NAME)}</span>
+								<span>${BX.message('UP_TREE_SEARCH_USER')}: ${BX.util.htmlspecialchars(user.NAME) + ' ' + BX.util.htmlspecialchars(user.LAST_NAME)}</span>
 							 	 <span class="leaderboard__persons">
-									<span class="heading-persons">Found relatives:</span>
+									<span class="heading-persons">${BX.message('UP_TREE_SEARCH_FOUND_RELATIVES')}:</span>
 										${this.usersPersons.foundPersons.filter(person => person.userId === Number(user.ID)).map(person => `
 										  <p class="persons-info">${person.name + ' ' + person.surname};</p>
 										`).join('')}

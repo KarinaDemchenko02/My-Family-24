@@ -47,6 +47,19 @@ export class Statistics {o
 
 			this.renderSelect();
 
+			if (this.trees.length === 0) {
+				const noTree = Tag.render`
+					<div style="text-align: center">
+						<h2 style="font-size: 24px">Нет созданных деревьев</h2>
+					</div>
+				`;
+
+				this.rootNode.style.display = 'block';
+
+				BX.append(noTree, this.rootNode);
+				return;
+			}
+
 			let treeId;
 			let type;
 			let statistics;
@@ -287,6 +300,7 @@ export class Statistics {o
 		const containerCanvas = document.createElement('div');
 		const canvas = document.createElement('canvas');
 		const labelCanvas = document.createElement('h2');
+		let options;
 
 		labelCanvas.textContent = label;
 		BX.addClass(labelCanvas, 'heading-graphs');
@@ -302,8 +316,40 @@ export class Statistics {o
 			labelCanvas.style.left = '20%';
 		}
 
+		containerCanvas.innerHTML = '';
+
 		BX.append(labelCanvas, containerCanvas);
 		BX.append(canvas, containerCanvas);
+
+		if (type === 'doughnut' || type === 'pie') {
+			options = {
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
+				scales: {
+					y: {
+						display: false,
+					},
+				},
+
+			};
+		} else {
+			options = {
+				plugins: {
+					legend: {
+						display: false,
+					},
+				},
+				scales: {
+					y: {
+						beginAtZero: true
+					},
+				},
+
+			};
+		}
 
 		new Chart(canvas, {
 			type: type,
@@ -316,18 +362,7 @@ export class Statistics {o
 					backgroundColor: backgroundColor,
 				}]
 			},
-			options: {
-				plugins: {
-					legend: {
-						display: false,
-					},
-				},
-				scales: {
-					y: {
-						beginAtZero: true
-					}
-				},
-			},
+			options: options
 
 		});
 
@@ -340,21 +375,33 @@ export class Statistics {o
 		<div class="select-box">
 			<h2 class="search__heading">Выберите дерево, по которому хотите посмотреть статистику</h2>
 			<div class="select-box__current" tabindex="1">
-				${this.trees.map(item => `
+				${this.trees.length === 0 ? `
 					<div class="select-box__value">
-						<input class="select-box__input" type="radio" id="${item.id}" value="${item.id}" name="trees" checked="checked"/>
-						<p id="tree${item.id}" class="select-box__input-text">${BX.util.htmlspecialchars(item.title)}</p>
+						<input id="no-tree" class="select-box__input" type="radio" name="trees" checked="checked"/>
+						<p class="select-box__input-text">Нет деревьев</p>
 					</div>
-				`).join('')}
-			
+				` : `
+					${this.trees.map(item => `
+						<div class="select-box__value">
+							<input class="select-box__input" type="radio" id="${item.id}" value="${item.id}" name="trees" checked="checked"/>
+							<p id="tree${item.id}" class="select-box__input-text">${BX.util.htmlspecialchars(item.title)}</p>
+						</div>
+					`).join('')}
+				`}
+				
 				<img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true"/>
 			</div>
 			<ul class="select-box__list">
-				${this.trees.map(item => `
+				${this.trees.length === 0 ? `
+					<li>
+						<label class="select-box__option" for="no-tree" aria-hidden="aria-hidden">Нет деревьев</label>
+					</li>
+				` : `
+					${this.trees.map(item => `
 					<li>
 						<label class="select-box__option" for="${item.id}" aria-hidden="aria-hidden">${BX.util.htmlspecialchars(item.title)}</label>
 					</li>
-           		 `).join('')}
+           		 `).join('')}`}
 			</ul>
 		</div>`
 
@@ -519,5 +566,7 @@ export class Statistics {o
 		BX.append(selectType, this.containerSelect);
 		BX.append(renderCheckbox, this.containerSelect);
 		BX.append(getButtonStatistics, this.containerSelect);
+
+		BX('statistics-send').disabled = this.trees.length === 0;
 	}
 }

@@ -25,7 +25,6 @@ $APPLICATION->setAdditionalCSS('style.css');
 	<div class="container">
 		<div class="profile">
 			<div id="data-profile"></div>
-
 		</div>
 	</div>
 
@@ -161,7 +160,7 @@ $APPLICATION->setAdditionalCSS('style.css');
 						<td><?= GetMessage('EMAIL') ?><?
 							if ($arResult["EMAIL_REQUIRED"]): ?><span class="starrequired">*</span><?
 							endif ?></td>
-						<td><input type="text" name="EMAIL" maxlength="50" value="<?
+						<td><input type="text" name="EMAIL" maxlength="254" value="<?
 							echo $arResult["arUser"]["EMAIL"] ?>"/></td>
 					</tr>
 					<?
@@ -254,166 +253,6 @@ $APPLICATION->setAdditionalCSS('style.css');
 					</tbody>
 				</table>
 			</div>
-
-			<?
-			if ($arResult["INCLUDE_FORUM"] == "Y")
-			{
-				?>
-
-				<div class="profile-link profile-user-div-link"><a title="<?= GetMessage(
-						"USER_SHOW_HIDE"
-					) ?>" href="javascript:void(0)" onclick="SectionClick('forum')"><?= GetMessage("forum_INFO") ?></a>
-				</div>
-				<div id="user_div_forum" class="profile-block-<?= strpos($arResult["opened"], "forum") === false
-					? "hidden" : "shown" ?>">
-					<table class="data-table profile-table">
-						<thead>
-						<tr>
-							<td colspan="2">&nbsp;</td>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td><?= GetMessage("forum_SHOW_NAME") ?></td>
-							<td>
-								<input type="hidden" name="forum_SHOW_NAME" value="N"/><input type="checkbox" name="forum_SHOW_NAME" value="Y" <? if (
-									$arResult["arForumUser"]["SHOW_NAME"]
-									== "Y"
-								) {
-									echo "checked=\"checked\"";
-								} ?> /></td>
-						</tr>
-						<tr>
-							<td><?= GetMessage('forum_DESCRIPTION') ?></td>
-							<td>
-								<input type="text" name="forum_DESCRIPTION" maxlength="255" value="<?= $arResult["arForumUser"]["DESCRIPTION"] ?>"/>
-							</td>
-						</tr>
-						<tr>
-							<td><?= GetMessage('forum_INTERESTS') ?></td>
-							<td>
-								<textarea cols="30" rows="5" name="forum_INTERESTS"><?= $arResult["arForumUser"]["INTERESTS"]; ?></textarea>
-							</td>
-						</tr>
-						<tr>
-							<td><?= GetMessage("forum_SIGNATURE") ?></td>
-							<td>
-								<textarea cols="30" rows="5" name="forum_SIGNATURE"><?= $arResult["arForumUser"]["SIGNATURE"]; ?></textarea>
-							</td>
-						</tr>
-						<tr>
-							<td><?= GetMessage("forum_AVATAR") ?></td>
-							<td><?= $arResult["arForumUser"]["AVATAR_INPUT"] ?>
-								<?
-								if ($arResult["arForumUser"]["AVATAR"] <> '')
-								{
-									?>
-									<br/><?= $arResult["arForumUser"]["AVATAR_HTML"] ?>
-									<?
-								}
-								?></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-
-				<?
-			}
-			?>
-			<?
-			if ($arResult["INCLUDE_BLOG"] == "Y")
-			{
-				?>
-				<div class="profile-link profile-user-div-link"><a title="<?= GetMessage(
-						"USER_SHOW_HIDE"
-					) ?>" href="javascript:void(0)" onclick="SectionClick('blog')"><?= GetMessage("blog_INFO") ?></a>
-				</div>
-				<div id="user_div_blog" class="profile-block-<?= strpos($arResult["opened"], "blog") === false
-					? "hidden" : "shown" ?>">
-					<table class="data-table profile-table">
-						<thead>
-						<tr>
-							<td colspan="2">&nbsp;</td>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td><?= GetMessage('blog_ALIAS') ?></td>
-							<td>
-								<input class="typeinput" type="text" name="blog_ALIAS" maxlength="255" value="<?= $arResult["arBlogUser"]["ALIAS"] ?>"/>
-							</td>
-						</tr>
-						<tr>
-							<td><?= GetMessage('blog_DESCRIPTION') ?></td>
-							<td>
-								<input class="typeinput" type="text" name="blog_DESCRIPTION" maxlength="255" value="<?= $arResult["arBlogUser"]["DESCRIPTION"] ?>"/>
-							</td>
-						</tr>
-						<tr>
-							<td><?= GetMessage('blog_INTERESTS') ?></td>
-							<td>
-								<textarea cols="30" rows="5" class="typearea" name="blog_INTERESTS"><? echo $arResult["arBlogUser"]["INTERESTS"]; ?></textarea>
-							</td>
-						</tr>
-						<tr>
-							<td><?= GetMessage("blog_AVATAR") ?></td>
-							<td><?= $arResult["arBlogUser"]["AVATAR_INPUT"] ?>
-								<?
-								if ($arResult["arBlogUser"]["AVATAR"] <> '')
-								{
-									?>
-									<br/><?= $arResult["arBlogUser"]["AVATAR_HTML"] ?>
-									<?
-								}
-								?></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-				<?
-			}
-			?>
-			<?
-			if ($arResult["INCLUDE_LEARNING"] == "Y"): ?>
-				<div class="profile-link profile-user-div-link"><a title="<?= GetMessage(
-						"USER_SHOW_HIDE"
-					) ?>" href="javascript:void(0)" onclick="SectionClick('learning')"><?= GetMessage(
-							"learning_INFO"
-						) ?></a></div>
-				<div id="user_div_learning" class="profile-block-<?= strpos($arResult["opened"], "learning") === false
-					? "hidden" : "shown" ?>">
-					<table class="data-table profile-table">
-						<thead>
-						<tr>
-							<td colspan="2">&nbsp;</td>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td><?= GetMessage("learning_PUBLIC_PROFILE"); ?>:</td>
-							<td>
-								<input type="hidden" name="student_PUBLIC_PROFILE" value="N"/><input type="checkbox" name="student_PUBLIC_PROFILE" value="Y" <?
-								if ($arResult["arStudent"]["PUBLIC_PROFILE"] == "Y") {
-									echo "checked=\"checked\"";
-								} ?> /></td>
-						</tr>
-						<tr>
-							<td><?= GetMessage("learning_RESUME"); ?>:</td>
-							<td>
-								<textarea cols="30" rows="5" name="student_RESUME"><?= $arResult["arStudent"]["RESUME"]; ?></textarea>
-							</td>
-						</tr>
-
-						<tr>
-							<td><?= GetMessage("learning_TRANSCRIPT"); ?>:</td>
-							<td><?= $arResult["arStudent"]["TRANSCRIPT"]; ?>-<?= $arResult["ID"] ?></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			<?
-			endif; ?>
-
 			<?
 			// ********************* User properties ***************************************************?>
 			<?
@@ -464,10 +303,7 @@ $APPLICATION->setAdditionalCSS('style.css');
 				</div>
 			<?
 			endif; ?>
-			<?
-			// ******************** /User properties ***************************************************?>
-			<p style="text-align: center; font-size: 1.2em"><?php echo $arResult["GROUP_POLICY"]["PASSWORD_REQUIREMENTS"]; ?></p>
-			<p style="text-align: center;"> <!-- Центрирование содержимого -->
+			<p style="text-align: center;">
 				<input type="submit" name="save" value="<?= (($arResult["ID"] > 0) ? GetMessage("MAIN_SAVE") : GetMessage("MAIN_ADD")) ?>">
 				&nbsp;&nbsp;
 				<input type="reset" value="<?= GetMessage('MAIN_RESET'); ?>">

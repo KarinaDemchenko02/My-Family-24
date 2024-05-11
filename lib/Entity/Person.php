@@ -12,8 +12,9 @@ class Person implements Entity
 	public string $active;
 	public int $imageId;
 	public string $photo;
-	public string $name;
+	public ?string $name;
 	public ?string $surname;
+	public ?string $patronymic;
 	public ?string $birthDate;
 	public ?string $deathDate;
 	public string $gender;
@@ -22,6 +23,7 @@ class Person implements Entity
 	public ?float $weight;
 	public ?float $height;
 	public ?string $education;
+	public ?string $hash;
 
 	/**
 	 * @param $active
@@ -29,19 +31,37 @@ class Person implements Entity
 	 * @param $photo
 	 * @param $name
 	 * @param $surname
+	 * @param $patronymic
 	 * @param string|null $birthDate
 	 * @param string|null $deathDate
 	 * @param $gender
 	 * @param $treeId
 	 * @param null $userId
 	 */
-	public function __construct($active, $imageId, $photo, $name, $surname, ?string $birthDate, ?string $deathDate, $gender, $treeId, $userId = null, $weight = null, $height = null, $education = null)
+	public function __construct(
+		$active,
+		$imageId,
+		$photo,
+		$name,
+		$surname,
+		$patronymic,
+		?string $birthDate,
+		?string $deathDate,
+		$gender,
+		$treeId,
+		$userId = null,
+		$weight = null,
+		$height = null,
+		$education = null,
+		$hash = null
+	)
 	{
 		$this->active = $active;
 		$this->imageId = $imageId;
 		$this->photo = $photo;
 		$this->name = $name;
 		$this->surname = $surname;
+		$this->patronymic = $patronymic;
 		$this->birthDate = $birthDate;
 		$this->deathDate = $deathDate;
 		$this->gender = $gender;
@@ -50,6 +70,17 @@ class Person implements Entity
 		$this->weight = $weight;
 		$this->height = $height;
 		$this->education = $education;
+		$this->hash = $hash;
+	}
+
+	public function getHash(): ?string
+	{
+		return $this->hash;
+	}
+
+	public function setHash(?string $hash): void
+	{
+		$this->hash = $hash;
 	}
 
 	/**
@@ -89,7 +120,7 @@ class Person implements Entity
 		$this->imageId = $imageId;
 	}
 
-	public function getName(): string
+	public function getName(): ?string
 	{
 		return $this->name;
 	}
@@ -174,5 +205,10 @@ class Person implements Entity
 	public function getEducationLevel(): ?string
 	{
 		return $this->education;
+	}
+
+	public function getPatronymic(): ?string
+	{
+		return $this->patronymic;
 	}
 }

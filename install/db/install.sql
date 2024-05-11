@@ -37,7 +37,7 @@ CREATE TABLE up_relation_user_single_purchase
 CREATE TABLE up_family_tree
 (
 	ID          INT                       NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	TITLE       VARCHAR(100)              NOT NULL,
+	TITLE       VARCHAR(70)              NOT NULL,
 	USER_ID     INT                       NOT NULL,
 	CREATED_AT  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
 	COLOR       VARCHAR(100) DEFAULT NULL,
@@ -46,18 +46,20 @@ CREATE TABLE up_family_tree
 
 CREATE TABLE up_person
 (
-	ID              INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ID              INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	IMAGE_ID        INT                                                         DEFAULT 0,
-	NAME            VARCHAR(50) NULL,
-	SURNAME         VARCHAR(50) NULL,
+	NAME            VARCHAR(50)  NULL,
+	SURNAME         VARCHAR(50)  NULL,
+	PATRONYMIC      VARCHAR(50)  NULL,
 	BIRTH_DATE      DATE,
 	DEATH_DATE      DATE,
 	GENDER          ENUM ('male', 'female'),
 	WEIGHT          FLOAT                                                       DEFAULT NULL,
 	HEIGHT          FLOAT                                                       DEFAULT NULL,
 	EDUCATION_LEVEL ENUM ('without education', 'school', 'secondary', 'higher') DEFAULT NULL,
-	TREE_ID         INT         NOT NULL,
-	ACTIVE          BOOL                                                        DEFAULT FALSE
+	TREE_ID         INT          NOT NULL,
+	ACTIVE          BOOL                                                        DEFAULT FALSE,
+	HASH            VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE up_relation_person_parent
@@ -79,6 +81,7 @@ CREATE TABLE up_chat
 	ID           INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	AUTHOR_ID    INT NOT NULL,
 	RECIPIENT_ID INT NOT NULL,
+	IS_ADMIN     BOOL DEFAULT FALSE,
 	CREATED_AT   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
