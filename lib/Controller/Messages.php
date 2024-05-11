@@ -37,6 +37,7 @@ class Messages extends Engine\Controller
 		$userId = (int)$USER->GetID();
 
 		if(!MessageService::isUserChatParticipant($chatId , $userId))
+		if(!MessageService::isUserChatParticipant($chatId))
 		{
 			return [];
 		}
